@@ -11,7 +11,7 @@ let connectedUsers: User[] = [];
 
 wss.on("connection", (socket) => {
   socket.on("message", (msg) => {
-    let messageData = JSON.parse(msg.toString());
+    const messageData = JSON.parse(msg.toString());
 
     if (messageData.type === "join") {
       connectedUsers.push({
@@ -21,14 +21,19 @@ wss.on("connection", (socket) => {
     }
 
     if (messageData.type === "chat") {
-      // check the user room for send the msg
-      let senderRoomId = connectedUsers.find((s) => s.socket == socket)?.room;
+      const senderRoomId = connectedUsers.find(
+        (s) => s.socket === socket,
+      )?.room;
 
-      for (let i = 0; i < connectedUsers.length; i++) {
-        if (connectedUsers[i]?.room == senderRoomId) {
-          connectedUsers[i]?.socket.send(messageData.payload.msg);
+      connectedUsers.forEach((user) => {
+        if (user.room === senderRoomId) {
+          user.socket.send(messageData.payload.message);
         }
-      }
+      });
     }
+  });
+
+  socket.on("close", () => {
+    connectedUsers = connectedUsers.filter((u) => u.socket !== socket);
   });
 });
