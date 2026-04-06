@@ -61,7 +61,7 @@ const App = () => {
           value={inputMessage}
           className="text-[16px] border-none outline-none"
           onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter"}
+          onKeyDown={(e) => e.key === "Enter" && handleMessageSend()}
         />
         <button
           className="bg-blue-700 rounded-full p-1"
