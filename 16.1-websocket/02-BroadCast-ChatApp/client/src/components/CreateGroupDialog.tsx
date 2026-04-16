@@ -14,7 +14,7 @@ const CreateGroupDialog = ({ setClose }: CreateGroupDialogProps) => {
       return alert("groupid or group name is invalid");
 
     try {
-      const response = await axios.post("http://localhost:8080/createGroup", {
+      const response = await axios.post("http://localhost:3030/createGroup", {
         groupId,
         groupName,
       });
