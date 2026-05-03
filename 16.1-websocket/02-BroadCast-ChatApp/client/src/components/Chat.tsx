@@ -1,10 +1,12 @@
 import { ArrowBigUpDash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const ChatPage = () => {
   const [messages, setMessages] = useState(["Hello EveryOne", "Ya Hello"]);
   const [inputMessage, setInputMessage] = useState("");
   const wsRef = useRef();
+  const { groupId } = useParams();
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { WebSocketServer, WebSocket } from "ws";
 import express from "express";
 import cors from "cors";
@@ -31,16 +32,19 @@ mongoose
   .catch((err) => console.log(err));
 
 app.post("/createGroup", async (req, res) => {
-  const { groupId, groupName } = req.body;
-  const groupExist = await Group.findOne({ id: groupId });
-  if (groupExist) return res.json({ message: "Group already exists" });
+  const { groupName } = req.body;
+  const groupExist = await Group.findOne({ name: groupName });
+  if (groupExist)
+    return res.json({
+      message: "Group already exists, Please Try Something Diffrent .",
+    });
 
   const group = await Group.create({
-    id: groupId,
+    id: uuidv4(),
     name: groupName,
   });
-  console.log(group);
-  res.json({ data: group });
+
+  res.json({ groupId: group.id });
 });
 
 // wss.on("connection", (socket) => {
